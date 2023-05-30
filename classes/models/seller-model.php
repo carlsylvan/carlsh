@@ -2,7 +2,7 @@
 
 require_once './classes/db.php';
 
-class ProductModel extends DB {
+class SellerModel extends DB {
 
     protected $table = 'sellers';
 
