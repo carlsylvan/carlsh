@@ -2,7 +2,7 @@
 
 class ProductView {
 
-    public function renderAllBooks(array $products): void {
+    public function renderAllProducts(array $products): void {
         echo "<h2>Produkter</h2>";
         echo "<ul>";
         foreach ($products as $product) {

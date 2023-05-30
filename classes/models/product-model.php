@@ -1,6 +1,6 @@
 <?php
 
-require_once '/db.php';
+require_once './classes/db.php';
 
 class ProductModel extends DB {
 
