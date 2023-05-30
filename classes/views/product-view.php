@@ -7,6 +7,8 @@ class ProductView {
         echo "<ul>";
         foreach ($products as $product) {
             echo "<li>{$product['title']}</li>";
+            echo "<p>{$product['description']}</p>";
+            echo "<p>{$product['price']} kr</p>";
         }
         echo "</ul>";
     }
