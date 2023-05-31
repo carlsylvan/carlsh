@@ -11,7 +11,7 @@ class SellerModel extends DB {
     public function getSellerClass (array $sellerArray): array {
         $sellers = [];
         foreach ($sellerArray as $sellerSingle) {
-            $product = new Product (
+            $seller = new Seller (
                 $sellerSingle["id"],
                 $sellerSingle["first_name"],
                 $sellerSingle["last_name"],
@@ -23,7 +23,10 @@ class SellerModel extends DB {
         return $sellers;
     }
 
-    public function getAllSellers(): array {
-        return $this->getSellerClass($this->getAll($this->table));
+    public function getAllSellers (): array {
+        $query = "SELECT * FROM $this->table ORDER BY $this->table.id ASC ";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute();
+        return $this->getSellerClass($stmt->fetchAll()) ;   
     }
 }
