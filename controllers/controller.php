@@ -17,16 +17,15 @@ class Controller {
     public function start($method, $request)
     {   
         $urlArray = $this->checkUrl($request);
-        // var_dump($urlArray);
         switch ($request) {
             case ($urlArray[2]==$this->table && count($urlArray)==3):
                 if($this->table == "sellers") {
                     $this->view->outputAll($this->table,$this->model->getAllSellers());
                 }
                 break;
-            case ($urlArray[3] && count($urlArray)==4):
-                $this->view->outputAll($this->table,$this->model->getOneSeller((int)$urlArray[3]));
-                break;
+            // case ($urlArray[3] && count($urlArray)==4):
+            //     $this->view->outputAll($this->table,$this->model->getOneSeller((int)$urlArray[3]));
+            //     break;
         }
     }
 }
