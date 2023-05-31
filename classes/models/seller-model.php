@@ -23,7 +23,7 @@ class SellerModel extends DB {
         return $sellers;
     }
 
-    public function getAllSellers (): array {
+    public function getAllSellers(): array {
         $query = "SELECT * FROM $this->table ORDER BY $this->table.id ASC ";
         $statement = $this->pdo->prepare($query);
         $statement->execute();

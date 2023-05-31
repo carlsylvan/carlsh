@@ -18,13 +18,19 @@ class Controller {
     {   
         $urlArray = $this->checkUrl($request);
         switch ($request) {
-            case ($urlArray[2]==$this->table && count($urlArray)==3):
-                if($this->table == "sellers") {
-                    $this->view->outputJson($this->table,$this->model->getAllSellers());
+            case ($urlArray[2] == $this->table && count($urlArray) == 3):
+                if ($this->table == "sellers") {
+                    $this->view->outputJson($this->table, $this->model->getAllSellers());
+                } elseif ($this->table == "products") {
+                    $this->view->outputJson($this->table, $this->model->getAllProducts());
                 }
                 break;
-            case ($urlArray[3] && count($urlArray)==4):
-                $this->view->outputJson($this->table,$this->model->getSingleSeller((int)$urlArray[3]));
+            case ($urlArray[2] == $this->table && count($urlArray) == 4):
+                if ($this->table == "sellers") {
+                    $this->view->outputJson($this->table, $this->model->getSingleSeller((int) $urlArray[3]));
+                } elseif ($this->table == "products") {
+                    $this->view->outputJson($this->table, $this->model->getSingleProduct((int) $urlArray[3]));
+                }
                 break;
         }
     }

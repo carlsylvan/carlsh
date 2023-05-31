@@ -30,6 +30,15 @@ class ProductModel extends DB {
     }
 
     public function getAllProducts(): array {
-        return $this->getProductClass($this->getAll($this->table));
+        $query = "SELECT * FROM $this->table ORDER BY $this->table.id ASC ";
+        $statement = $this->pdo->prepare($query);
+        $statement->execute();
+        return $this->getProductClass($statement->fetchAll()) ;   
     }
+    public function getSingleProduct(int $id): array {
+        $query = "SELECT * FROM $this->table WHERE $this->table.id = ?";
+        $statement = $this->pdo->prepare($query);
+        $statement->execute([$id]);
+        return $this->getProductClass($statement->fetchAll()) ;   
+        }
 }
