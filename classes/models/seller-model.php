@@ -24,6 +24,9 @@ class SellerModel extends DB {
     }
 
     public function getAllSellers(): array {
-        return $this->getSellerClass($this->getAll($this->table));
+        $query = "SELECT * FROM $this->table ORDER BY $this->table.last_name ASC ";
+        $statement = $this->pdo->prepare($query);
+        $statement->execute();
+        return $this->getSellerClass($statement->fetchAll()) ;   
     }
 }

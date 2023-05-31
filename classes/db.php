@@ -36,10 +36,9 @@ class DB
     }  
     public function getAll($table) : array
     {
-
         $query = "SELECT * FROM $table";
-        $stmt = $this->pdo->prepare($query);
-        $stmt->execute();
-        return $stmt->fetchAll();   
+        $statement = $this->pdo->prepare($query);
+        $statement->execute();
+        return $statement->fetchAll();   
     }
 }

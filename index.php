@@ -1,7 +1,7 @@
 <?php
 
 require 'classes/views/json-api.php';
-require './controllers/controller.php';
+require 'controllers/controller.php';
 
 require 'classes/models/product-model.php';
 // require 'classes/views/product-view.php';

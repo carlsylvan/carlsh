@@ -14,8 +14,7 @@ class Controller {
     private function checkUrl ($request) {
         return explode("/", $request);
     }
-    public function start($method, $request)
-    {   
+    public function start($method, $request) {   
         $urlArray = $this->checkUrl($request);
         switch ($request) {
             case ($urlArray[2]==$this->table && count($urlArray)==3):
