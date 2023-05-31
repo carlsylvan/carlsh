@@ -1,3 +1,6 @@
 RewriteEngine On
+RewriteBase /carlsh/
+RewriteRule ^index\\.php$ - [L]
 RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule ^(.*)$ index.php
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /carlsh/index.php [L]
