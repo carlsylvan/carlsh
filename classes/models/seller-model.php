@@ -25,8 +25,14 @@ class SellerModel extends DB {
 
     public function getAllSellers (): array {
         $query = "SELECT * FROM $this->table ORDER BY $this->table.id ASC ";
-        $stmt = $this->pdo->prepare($query);
-        $stmt->execute();
-        return $this->getSellerClass($stmt->fetchAll()) ;   
+        $statement = $this->pdo->prepare($query);
+        $statement->execute();
+        return $this->getSellerClass($statement->fetchAll()) ;   
     }
+    public function getSingleSeller(int $id): array {
+        $query = "SELECT * FROM $this->table WHERE $this->table.id = ?";
+        $statement = $this->pdo->prepare($query);
+        $statement->execute([$id]);
+        return $this->getSellerClass($statement->fetchAll()) ;   
+        }
 }

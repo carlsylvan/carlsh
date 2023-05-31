@@ -23,9 +23,9 @@ class Controller {
                     $this->view->outputJson($this->table,$this->model->getAllSellers());
                 }
                 break;
-            // case ($urlArray[3] && count($urlArray)==4):
-            //     $this->view->outputAll($this->table,$this->model->getOneSeller((int)$urlArray[3]));
-            //     break;
+            case ($urlArray[3] && count($urlArray)==4):
+                $this->view->outputJson($this->table,$this->model->getSingleSeller((int)$urlArray[3]));
+                break;
         }
     }
 }
