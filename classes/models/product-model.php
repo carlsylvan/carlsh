@@ -29,6 +29,15 @@ class ProductModel extends DB {
         return $products;
     }
 
+    public function getProducts($id) {
+        if ($id == 0) {
+            return $this->getAllProducts();
+        } else {
+            return $this->getSingleProduct($id);
+        }
+
+    }
+
     public function getAllProducts(): array {
         $query = "SELECT * FROM $this->table ORDER BY $this->table.id ASC ";
         $statement = $this->pdo->prepare($query);
@@ -41,4 +50,7 @@ class ProductModel extends DB {
         $statement->execute([$id]);
         return $this->getProductClass($statement->fetchAll()) ;   
         }
+
+        
+        
 }

@@ -40,4 +40,6 @@ class Controller {
             $this->view->outputJson('error', 'Invalid route');
         }
     }
+
+    
 }

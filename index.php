@@ -14,7 +14,7 @@ $controller = new Controller($jsonApi);
 
 $controller->addRoute('/sellers', new SellerModel(), 'getSellers');
 
-$controller->addRoute('/products', new ProductModel(), 'getAllProducts');
-$controller->addRoute('/products/', new ProductModel(), 'getSingleProduct');
+$controller->addRoute('/products', new ProductModel(), 'getProducts');
+
 
 $controller->start($method, $request);
