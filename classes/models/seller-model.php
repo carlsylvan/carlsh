@@ -20,6 +20,15 @@ class SellerModel extends DB {
         return $sellers;
     }
 
+    public function getSellers($id) {
+        if ($id == 0) {
+            return $this->getAllSellers();
+        } else {
+            return $this->getSingleSeller($id);
+        }
+
+    }
+
     public function getAllSellers(): array {
         $query = "SELECT * FROM $this->table ORDER BY $this->table.id ASC";
         $statement = $this->pdo->prepare($query);
@@ -33,4 +42,5 @@ class SellerModel extends DB {
         $statement->execute([$id]);
         return $this->getSellerClass($statement->fetchAll());
     }
+    
 }

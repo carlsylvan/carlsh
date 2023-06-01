@@ -32,10 +32,10 @@ class Controller {
     }
 
     private function handleRoute($model, $method, $paramsArray) {
-        if (count($paramsArray) === 0) {
-            $this->view->outputJson($model, $model->$method());
-        } elseif (count($paramsArray) === 1) {
-            $this->view->outputJson($model, $model->$method((int)$paramsArray[0]));
+        if (count($paramsArray) === 1) {
+            $this->view->outputJson($model, $model->$method(0));
+        } elseif (count($paramsArray) === 2 && (int)$paramsArray[1] != 0) {
+            $this->view->outputJson($model, $model->$method((int)$paramsArray[1]));
         } else {
             $this->view->outputJson('error', 'Invalid route');
         }
