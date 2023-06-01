@@ -1,37 +1,43 @@
 <?php
 
 class Controller {
-    private $model = null;
+    private $routes = [];
     private $view = null;
 
-    private $table = "";
-
-    public function __construct($model, $view, $table) {
-        $this->model = $model;
+    public function __construct($view) {
         $this->view = $view;
-        $this->table = $table;
     }
-    private function checkUrl ($request) {
-        return explode("/", $request);
+
+    public function addRoute($route, $model, $method) {
+        $this->routes[$route] = ['model' => $model, 'method' => $method];
     }
-    public function start($method, $request)
-    {   
-        $urlArray = $this->checkUrl($request);
-        switch ($request) {
-            case ($urlArray[2] == $this->table && count($urlArray) == 3):
-                if ($this->table == "sellers") {
-                    $this->view->outputJson($this->table, $this->model->getAllSellers());
-                } elseif ($this->table == "products") {
-                    $this->view->outputJson($this->table, $this->model->getAllProducts());
-                }
-                break;
-            case ($urlArray[2] == $this->table && count($urlArray) == 4):
-                if ($this->table == "sellers") {
-                    $this->view->outputJson($this->table, $this->model->getSingleSeller((int) $urlArray[3]));
-                } elseif ($this->table == "products") {
-                    $this->view->outputJson($this->table, $this->model->getSingleProduct((int) $urlArray[3]));
-                }
-                break;
+
+    public function start($method, $request) {
+        $url = parse_url($request, PHP_URL_PATH);
+        foreach ($this->routes as $route => $action) {
+            
+            if (strpos($url, $route) === 7) {
+        
+                $params = trim(substr($url, strlen($route)), '/');
+                $paramsArray = explode('/', $params);
+    
+                $model = $action['model'];
+                $method = $action['method'];
+    
+                $this->handleRoute($model, $method, $paramsArray);
+                return;
+            }
+        }
+        $this->view->outputJson('error', 'Route not found');
+    }
+
+    private function handleRoute($model, $method, $paramsArray) {
+        if (count($paramsArray) === 0) {
+            $this->view->outputJson($model, $model->$method());
+        } elseif (count($paramsArray) === 1) {
+            $this->view->outputJson($model, $model->$method((int)$paramsArray[0]));
+        } else {
+            $this->view->outputJson('error', 'Invalid route');
         }
     }
 }
