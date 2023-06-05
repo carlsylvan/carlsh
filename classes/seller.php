@@ -27,32 +27,4 @@ class Seller {
     public function addId(int $id) {
         $this->id = $id;
     }
-    public function addProductCount (int $count) {
-        $this->productsCount = $count;
-    }
-    public function addSoldProductCount (int $count) {
-        $this->soldProductsCount = $count;
-    }
-    public function addTotalSellingPrice (int $totalPrice) {
-        $this->totalSellingPrice = $totalPrice;
-    }
-    public function addProducts (array $products) {
-        $this->products = $products;
-    }
 }
-
-// class Seller {
-//     public int $id = 0;
-//     public string $first_name = "";
-//     public string $last_name = "";
-//     public string $phone = "";
-//     public string $email = "";
-
-//     function __construct($id, $first_name, $last_name, $phone, $email) {
-//         $this->id = $id;
-//         $this->first_name = $first_name;
-//         $this->last_name = $last_name;
-//         $this->phone = $phone;
-//         $this->email = $email;
-//     }
-// }
