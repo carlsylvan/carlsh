@@ -14,11 +14,6 @@ class SellerModel extends DB {
                 $sellerSingle["phone"],
             );
             $seller->addId($sellerSingle["id"]);
-            // $seller->addCreatingDate($element["creating_date"]);
-            // $seller->addProductCount($this->getProductsCountByUser($element['id']));
-            // $seller->addSoldProductCount($this->getSoldProductsCountByUser($element['id']));
-            // $seller->addTotalSellingPrice($this->getSoldProductsTotalPriceByUser($element['id']));
-            // $seller->addProducts($this->getAllProductListByUser($element['id']));
             array_push($sellers, $seller);
         }
         return $sellers;
