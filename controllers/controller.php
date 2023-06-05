@@ -93,6 +93,10 @@ class Controller {
                         break;
                 }
             http_response_code(201);
+            echo json_encode([
+                "message" => "Added",
+                "id" => $id
+            ]);
         }
     }
     private function handlePutRoute ($model, $method, ? int $id){

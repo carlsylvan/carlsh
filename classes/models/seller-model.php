@@ -31,10 +31,11 @@ class SellerModel extends DB {
         return $this->convertToSellerClass($statement->fetchAll()) ;   
         }
 
-    public function addSeller (Seller $seller) : void {
-        $query = "INSERT INTO `sellers`(`first_name`, `last_name`, `email`, `phone') VALUES (?,?,?,?)";
-        $statement = $this->pdo->prepare($query);
-        $statement->execute([$seller->first_name, $seller->last_name, $seller->email, $seller->phone]);  
-    }
+        public function addSeller (Seller $seller) : string {
+            $query = "INSERT INTO `sellers`(`first_name`, `last_name`, `email`, `phone`) VALUES (?,?,?,?)";
+            $stmt = $this->pdo->prepare($query);
+            $stmt->execute([$seller->first_name, $seller->last_name, $seller->email, $seller->phone]);
+            return $this->pdo->lastInsertId();  
+        }
 
 }

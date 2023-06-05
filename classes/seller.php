@@ -1,7 +1,7 @@
 <?php
 
 class Seller {
-    public  $id = 0;
+    public $id = 0;
     public string $first_name = "";
     public string $last_name = "";
     public string $email = "";
