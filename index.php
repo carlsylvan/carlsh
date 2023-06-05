@@ -23,8 +23,6 @@ $controller->addRoute("/seller/add", $sellerModel, 'addSeller');
 
 $controller->addRoute("/products", $productModel, 'getAllProducts');
 $controller->addRoute("/product", $productModel, "getSingleProduct");
-$controller->addRoute("/product/add", $sellerModel, 'addProduct');
+$controller->addRoute("/product/add", $productModel, 'addProduct');
 
 $controller->start($request);
-
-// 

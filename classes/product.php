@@ -1,29 +1,32 @@
 <?php
 
-class Product {
-    public int | null $id = null;
-    public string $title = "";
-    public string $description = "";
-    public int $price = 0;
-    public int $seller_id = 0;
-    public int $category_id = 0;
-    public int $size_id = 0;
-    public string $added = "";
-    public string | null $sold = "";
-    public int $color_id = 0;
-    public int $brand_id = 0;
+class Product
+{
+    // Add the new properties
+    public int | null $id;
+    public $title;
+    public $description;
+    public $price;
+    public $seller_id;
+    public $category_id;
+    public $size_id;
+    public $color_id;
+    public $brand_id;
+    public $added;
+    public $sold;
 
-    function __construct($title, $description, $price, $seller_id, $category_id, $size_id, $added, $sold, $color_id, $brand_id) {
+    public function __construct($title, $description, $price, $seller_id, $category_id, $size_id, $color_id, $brand_id)
+    {
         $this->title = $title;
         $this->description = $description;
         $this->price = $price;
         $this->seller_id = $seller_id;
         $this->category_id = $category_id;
         $this->size_id = $size_id;
-        $this->added = $added;
-        $this->sold = $sold;
         $this->color_id = $color_id;
         $this->brand_id = $brand_id;
+        $this->added = null; // Will be auto-generated in MySQL
+        $this->sold = null; // Defaults to null
     }
 
     public function addId (int $id) {

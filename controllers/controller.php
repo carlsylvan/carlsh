@@ -51,30 +51,48 @@ class Controller {
             $this->view->outputJson($model->$method());
         }
     }
-    private function handlePostRoute($model, $method, $element) {
-        $requestData = $_POST;
-        if ($element == "seller") {
-            $seller = new Seller(
-                filter_var($requestData["first_name"], FILTER_SANITIZE_SPECIAL_CHARS),
-                filter_var($requestData["last_name"], FILTER_SANITIZE_SPECIAL_CHARS),
-                filter_var(filter_var($requestData["email"], FILTER_SANITIZE_EMAIL), FILTER_VALIDATE_EMAIL),
-                filter_var($requestData["phone"], FILTER_SANITIZE_NUMBER_INT)
-            );
-            $model->$method($seller);
-        } else if ($element == "product") {
-            $product = new Product(
-                filter_var($requestData["title"], FILTER_SANITIZE_SPECIAL_CHARS),
-                filter_var($requestData["description"], FILTER_SANITIZE_SPECIAL_CHARS),
-                filter_var(filter_var($requestData["price"], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION), FILTER_VALIDATE_FLOAT),
-                filter_var(filter_var($requestData["seller_id"], FILTER_SANITIZE_NUMBER_INT), FILTER_VALIDATE_INT),
-                filter_var(filter_var($requestData["category_id"], FILTER_SANITIZE_NUMBER_INT), FILTER_VALIDATE_INT),
-                filter_var(filter_var($requestData["size_id"], FILTER_SANITIZE_NUMBER_INT), FILTER_VALIDATE_INT),
-                filter_var(filter_var($requestData["color_id"], FILTER_SANITIZE_NUMBER_INT), FILTER_VALIDATE_INT),
-                filter_var(filter_var($requestData["brand_id"], FILTER_SANITIZE_NUMBER_INT), FILTER_VALIDATE_INT),
-                null,
-                null
-            );
-            $model->$method($product);
+    private function handlePostRoute($model, $method, $element)
+    {
+        $requestData = filter_input_array(INPUT_POST, FILTER_SANITIZE_SPECIAL_CHARS);
+
+        if (isset(
+            $_POST["first_name"],
+            $_POST["last_name"],
+            $_POST["email"],
+            $_POST["phone"]
+        ) || isset(
+            $_POST["title"],
+            $_POST["description"],
+            $_POST["price"],
+            $_POST["seller_id"],
+            $_POST["category_id"],
+            $_POST["size_id"],
+            $_POST["color_id"],
+            $_POST["brand_id"]
+        )) {
+            switch ($element) {
+                case ("seller"):
+                    $first_name = $requestData["first_name"];
+                    $last_name = $requestData["last_name"];
+                    $email = filter_var($requestData["email"], FILTER_VALIDATE_EMAIL);
+                    $phone = filter_var($requestData["phone"], FILTER_SANITIZE_NUMBER_INT);
+                    $seller = new Seller($first_name, $last_name, $email, $phone);
+                    $id = $model->$method($seller);
+                    break;
+                    case ("product"):
+                        $title = $requestData["title"];
+                        $description = $requestData["description"];
+                        $price = filter_var($requestData["price"], FILTER_VALIDATE_INT);
+                        $seller_id = filter_var($requestData["seller_id"], FILTER_VALIDATE_INT);
+                        $category_id = filter_var($requestData["category_id"], FILTER_VALIDATE_INT);
+                        $size_id = filter_var($requestData["size_id"], FILTER_VALIDATE_INT);
+                        $color_id = filter_var($requestData["color_id"], FILTER_VALIDATE_INT);
+                        $brand_id = filter_var($requestData["brand_id"], FILTER_VALIDATE_INT);
+                        $product = new Product($title, $description, $price, $seller_id, $category_id, $size_id, $color_id, $brand_id);
+                        $id = $model->$method($product);
+                        break;
+                }
+            http_response_code(201);
         }
     }
     private function handlePutRoute ($model, $method, ? int $id){
