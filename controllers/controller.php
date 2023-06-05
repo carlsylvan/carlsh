@@ -51,28 +51,31 @@ class Controller {
             $this->view->outputJson($model->$method());
         }
     }
-    private function handlePostRoute ($model, $method, $element){
+    private function handlePostRoute($model, $method, $element) {
         $requestData = $_POST;
-            if($element == "seller") {
-                $seller = new Seller (
-                    filter_var($requestData["first_name"],FILTER_SANITIZE_SPECIAL_CHARS),
-                    filter_var($requestData["last_name"],FILTER_SANITIZE_SPECIAL_CHARS),
-                    filter_var(filter_var($requestData["epost"],FILTER_SANITIZE_EMAIL),FILTER_VALIDATE_EMAIL),
-                    filter_var($requestData["mobile"],FILTER_SANITIZE_NUMBER_INT)
-                );
-                $model->$method($seller);
-                
-            }
-            // else if($element == "product") {
-            //     $product = new Product (
-            //         filter_var($requestData["name"],FILTER_SANITIZE_SPECIAL_CHARS),
-            //         filter_var(filter_var($requestData["size_id"],FILTER_SANITIZE_NUMBER_INT),FILTER_VALIDATE_INT),
-            //         filter_var(filter_var($requestData["category_id"],FILTER_SANITIZE_NUMBER_INT),FILTER_VALIDATE_INT),
-            //         filter_var(filter_var($requestData["price"],FILTER_SANITIZE_NUMBER_INT),FILTER_VALIDATE_INT),
-            //         filter_var(filter_var($requestData["seller_id"],FILTER_SANITIZE_NUMBER_INT),FILTER_VALIDATE_INT)
-            //     );
-            //     $model->$method($product);
-            // }
+        if ($element == "seller") {
+            $seller = new Seller(
+                filter_var($requestData["first_name"], FILTER_SANITIZE_SPECIAL_CHARS),
+                filter_var($requestData["last_name"], FILTER_SANITIZE_SPECIAL_CHARS),
+                filter_var(filter_var($requestData["email"], FILTER_SANITIZE_EMAIL), FILTER_VALIDATE_EMAIL),
+                filter_var($requestData["phone"], FILTER_SANITIZE_NUMBER_INT)
+            );
+            $model->$method($seller);
+        } else if ($element == "product") {
+            $product = new Product(
+                filter_var($requestData["title"], FILTER_SANITIZE_SPECIAL_CHARS),
+                filter_var($requestData["description"], FILTER_SANITIZE_SPECIAL_CHARS),
+                filter_var(filter_var($requestData["price"], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION), FILTER_VALIDATE_FLOAT),
+                filter_var(filter_var($requestData["seller_id"], FILTER_SANITIZE_NUMBER_INT), FILTER_VALIDATE_INT),
+                filter_var(filter_var($requestData["category_id"], FILTER_SANITIZE_NUMBER_INT), FILTER_VALIDATE_INT),
+                filter_var(filter_var($requestData["size_id"], FILTER_SANITIZE_NUMBER_INT), FILTER_VALIDATE_INT),
+                filter_var(filter_var($requestData["color_id"], FILTER_SANITIZE_NUMBER_INT), FILTER_VALIDATE_INT),
+                filter_var(filter_var($requestData["brand_id"], FILTER_SANITIZE_NUMBER_INT), FILTER_VALIDATE_INT),
+                null,
+                null
+            );
+            $model->$method($product);
+        }
     }
     private function handlePutRoute ($model, $method, ? int $id){
         if($id) {
