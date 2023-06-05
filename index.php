@@ -9,14 +9,22 @@ $pdo = require 'partials/connect.php';
 $request = $_SERVER['REQUEST_URI'];
 $method = $_SERVER['REQUEST_METHOD'];
 
+
+$sellerModel = new SellerModel();
+$productModel = new ProductModel();
 $jsonApi = new JsonApi();
-$controller = new Controller($jsonApi);
-
-$controller->addRoute('/sellers', new SellerModel(), 'getSellers', 'GET');
-$controller->addRoute('/products', new ProductModel(), 'getProducts', 'GET');
-
-$controller->addRoute('/sellers', new SellerModel(), 'addSeller', 'POST');
 
 
+$controller = new Controller($jsonApi, $method);
 
-$controller->start($method, $request);
+$controller->addRoute("/sellers", $sellerModel, 'getAllSellers');
+$controller->addRoute("/seller", $sellerModel, "getSingleSeller");
+$controller->addRoute("/seller/add", $sellerModel, 'addSeller');
+
+$controller->addRoute("/products", $productModel, 'getAllProducts');
+$controller->addRoute("/product", $productModel, "getSingleProduct");
+$controller->addRoute("/product/add", $sellerModel, 'addProduct');
+
+$controller->start($request);
+
+// 

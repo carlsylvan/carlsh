@@ -12,7 +12,6 @@ class ProductModel extends DB {
         $products = [];
         foreach ($productArray as $productSingle) {
             $product = new Product (
-                $productSingle["id"],
                 $productSingle["title"],
                 $productSingle["description"],
                 $productSingle["price"],
@@ -24,6 +23,7 @@ class ProductModel extends DB {
                 $productSingle["color_id"],
                 $productSingle["brand_id"]
             );
+            $product->addId($productSingle["id"]);
             array_push($products, $product);
         }
         return $products;

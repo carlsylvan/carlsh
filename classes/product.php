@@ -1,7 +1,7 @@
 <?php
 
 class Product {
-    public int $id = 0;
+    public int | null $id = null;
     public string $title = "";
     public string $description = "";
     public int $price = 0;
@@ -13,8 +13,7 @@ class Product {
     public int $color_id = 0;
     public int $brand_id = 0;
 
-    function __construct($id, $title, $description, $price, $seller_id, $category_id, $size_id, $added, $sold, $color_id, $brand_id) {
-        $this->id = $id;
+    function __construct($title, $description, $price, $seller_id, $category_id, $size_id, $added, $sold, $color_id, $brand_id) {
         $this->title = $title;
         $this->description = $description;
         $this->price = $price;
@@ -26,4 +25,9 @@ class Product {
         $this->color_id = $color_id;
         $this->brand_id = $brand_id;
     }
+
+    public function addId (int $id) {
+        $this->id = $id;
+    }
+    
 }
