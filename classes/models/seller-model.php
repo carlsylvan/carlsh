@@ -42,5 +42,10 @@ class SellerModel extends DB {
         $statement->execute([$id]);
         return $this->getSellerClass($statement->fetchAll());
     }
+    public function addSeller(Seller $seller): void {
+        $query = "INSERT INTO $this->table (`first_name`, `last_name`, `email`, `phone`) VALUES (?, ?, ?, ?)";
+        $statement = $this->pdo->prepare($query);
+        $statement->execute([$seller->first_name, $seller->last_name, $seller->email, $seller->phone]);
+    }
     
 }

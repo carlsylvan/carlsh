@@ -12,9 +12,11 @@ $method = $_SERVER['REQUEST_METHOD'];
 $jsonApi = new JsonApi();
 $controller = new Controller($jsonApi);
 
-$controller->addRoute('/sellers', new SellerModel(), 'getSellers');
+$controller->addRoute('/sellers', new SellerModel(), 'getSellers', 'GET');
+$controller->addRoute('/products', new ProductModel(), 'getProducts', 'GET');
 
-$controller->addRoute('/products', new ProductModel(), 'getProducts');
+$controller->addRoute('/sellers', new SellerModel(), 'addSeller', 'POST');
+
 
 
 $controller->start($method, $request);
