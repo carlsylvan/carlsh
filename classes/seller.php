@@ -1,5 +1,4 @@
 <?php
-
 class Seller {
     public $id = 0;
     public string $first_name = "";
@@ -7,8 +6,8 @@ class Seller {
     public string $email = "";
     public string $phone = "";
 
-    public  $productsCount = [];
-    public  $soldProductsCount = [];
+    public $productsCount = [];
+    public $soldProductsCount = [];
     public $totalSellingPrice = [];
     public $products = [];
 
@@ -26,5 +25,17 @@ class Seller {
     }
     public function addId(int $id) {
         $this->id = $id;
+    }
+    public function addProductCount (int $count) {
+        $this->productsCount = $count;
+    }
+    public function addSoldProductCount (int $count) {
+        $this->soldProductsCount = $count;
+    }
+    public function addTotalSellingPrice (int $totalPrice) {
+        $this->totalSellingPrice = $totalPrice;
+    }
+    public function addProducts (array $products) {
+        $this->products = $products;
     }
 }

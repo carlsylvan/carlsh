@@ -19,10 +19,10 @@ $controller = new Controller($jsonApi, $method);
 
 $controller->addRoute("/sellers", $sellerModel, 'getAllSellers');
 $controller->addRoute("/seller", $sellerModel, "getSingleSeller");
-$controller->addRoute("/seller/add", $sellerModel, 'addSeller');
+$controller->addRoute("/addseller", $sellerModel, 'addSeller');
 
 $controller->addRoute("/products", $productModel, 'getAllProducts');
 $controller->addRoute("/product", $productModel, "getSingleProduct");
-$controller->addRoute("/product/add", $productModel, 'addProduct');
+$controller->addRoute("/addproduct", $productModel, 'addProduct');
 
 $controller->start($request);

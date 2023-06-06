@@ -2,7 +2,6 @@
 
 class Product
 {
-    // Add the new properties
     public int | null $id;
     public $title;
     public $description;
@@ -25,8 +24,8 @@ class Product
         $this->size_id = $size_id;
         $this->color_id = $color_id;
         $this->brand_id = $brand_id;
-        $this->added = null; // Will be auto-generated in MySQL
-        $this->sold = null; // Defaults to null
+        $this->added = null;
+        $this->sold = null;
     }
 
     public function addId (int $id) {
