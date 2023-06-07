@@ -15,63 +15,47 @@ class Controller {
         $this->routes[$route] = ['model' => $model, 'method' => $method];
     }
 
-    public function start($request) {
-        $urlExplode = explode("/", $request);
-            $end = $urlExplode[2];
+    public function start($request):void {
+        $parts = explode("/", $request);
             foreach ($this->routes as $route => $action) {
-            if($this->method == "GET" && trim($route, "/") == $urlExplode[2]) {
+            if($this->method == "GET" && trim($route, "/") == $parts[2]) {
+                $id = $parts[3] ?? null;
                 $model = $action['model'];
                 $method = $action['method'];
-                $this->handleGetRoute($model, $method, $urlExplode);
+                $this->handleGetRoute($model, $method, $id);
             }
-            else if($this->method == "POST" && trim($route, "/") == $urlExplode[2]) {
+            else if($this->method == "POST" && trim($route, "/") == $parts[2]) {
                 $model = $action['model'];
                 $method = $action['method']; 
-                $this->handlePostRoute($model, $method, $urlExplode);
+                var_dump($parts[2]);
+                $this->handlePostRoute($model, $method, $parts[2]);
             }
-            else if($this->method == "PUT" && trim($route, "/") == $urlExplode[2] . "/" . $urlExplode[3]) {
+            else if($this->method == "PUT" && trim($route, "/") == $parts[2] . "/" . $parts[3]) {
+                $id = $parts[4] ?? null;
                 $model = $action['model'];
                 $method = $action['method'];
-                $this->handlePutRoute($model, $method, $urlExplode[4]);
+                $this->handlePutRoute($model, $method, $id);
             }
         }
         
         // $this->view->outputJson("error");
+        // http_response_code(404);
     }
     
-    private function handleGetRoute($model, $method, $urlExplode) {
-        $id = null;
-        if (isset($urlExplode[3])) {
-            $id = (int) $urlExplode[3];
-        }
-    
-        if ($id) {
+    private function handleGetRoute($model, $method, ? int $id) {
+        if ( $id) {
             $this->view->outputJson($model->$method($id));
         } else {
             $this->view->outputJson($model->$method());
-        }
+        } 
     }
-    private function handlePostRoute($model, $method, $element)
-    {
-        $requestData = filter_input_array(INPUT_POST, FILTER_SANITIZE_SPECIAL_CHARS);
-
-        if (isset(
-            $_POST["first_name"],
-            $_POST["last_name"],
-            $_POST["email"],
-            $_POST["phone"]
-        ) || isset(
-            $_POST["title"],
-            $_POST["description"],
-            $_POST["price"],
-            $_POST["seller_id"],
-            $_POST["category_id"],
-            $_POST["size_id"],
-            $_POST["color_id"],
-            $_POST["brand_id"]
-        )) {
+    private function handlePostRoute($model, $method, $element) {
+        $data = file_get_contents('php://input');
+        $requestData = json_decode($data, true);
+        // var_dump($requestData);
+            
             switch ($element) {
-                case ("seller"):
+                case ("addseller"):
                     $first_name = $requestData["first_name"];
                     $last_name = $requestData["last_name"];
                     $email = filter_var($requestData["email"], FILTER_VALIDATE_EMAIL);
@@ -79,7 +63,7 @@ class Controller {
                     $seller = new Seller($first_name, $last_name, $email, $phone);
                     $id = $model->$method($seller);
                     break;
-                    case ("product"):
+                    case ("addproduct"):
                         $title = $requestData["title"];
                         $description = $requestData["description"];
                         $price = filter_var($requestData["price"], FILTER_VALIDATE_INT);
@@ -94,11 +78,10 @@ class Controller {
                 }
             http_response_code(201);
             echo json_encode([
-                "message" => "Added",
+                "message" => "New data has been added",
                 "id" => $id
             ]);
-        }
-    }
+            }
     private function handlePutRoute ($model, $method, ? int $id){
         if($id) {
             $model->$method($id);
