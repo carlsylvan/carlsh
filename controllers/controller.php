@@ -1,45 +1,57 @@
 <?php
 
-
-class Controller {
+class Controller
+{
     private $routes = [];
     private $view = null;
     private $method = "";
 
-    public function __construct($view, $method) {
+    public function __construct($view, $method)
+    {
         $this->view = $view;
         $this->method = $method;
     }
 
-    public function addRoute($route, $model, $method) {
-        $this->routes[$route] = ['model' => $model, 'method' => $method];
+    public function addRoute($route, $model, $method, $requestType)
+    {
+        $this->routes[$route] = ['model' => $model, 'method' => $method, 'requestType' => $requestType];
     }
 
-    public function start($request):void {
+    public function start($request): void
+    {
         $parts = explode("/", $request);
-            foreach ($this->routes as $route => $action) {
-                if ($this->method == "GET" && trim($route, "/") == $parts[2] && trim($route, "/") != 'sellproduct') {
-                    $id = $parts[3] ?? null;
-                    $model = $action['model'];
-                    $method = $action['method'];
-                    $this->handleGetRoute($model, $method, $id);
-                }
-            else if($this->method == "POST" && trim($route, "/") == $parts[2]) {
-                $model = $action['model'];
-                $method = $action['method']; 
-                var_dump($parts[2]);
-                $this->handlePostRoute($model, $method, $parts[2]);
-            }
-            else if ($this->method == "PUT" && trim($route, "/") == $parts[2]) {
-                $id = $parts[3] ?? null;
-                $model = $action['model'];
-                $method = $action['method'];
-                $this->handlePutRoute($model, $method, $id);
+        $matchedRoute = null;
+        foreach ($this->routes as $route => $action) {
+            if (trim($route, "/") == $parts[2] && $action['requestType'] == $this->method) {
+                $matchedRoute = $action;
+                break;
             }
         }
-        
-        // $this->view->outputJson("error");
-        // http_response_code(404);
+
+        if ($matchedRoute) {
+            $id = $parts[3] ?? null;
+            $model = $matchedRoute['model'];
+            $method = $matchedRoute['method'];
+
+            switch ($this->method) {
+                case 'GET':
+                    $this->handleGetRoute($model, $method, $id);
+                    break;
+                case 'POST':
+                    $this->handlePostRoute($model, $method, $parts[2]);
+                    break;
+                case 'PUT':
+                    $this->handlePutRoute($model, $method, $id);
+                    break;
+                default:
+                    http_response_code(405);
+                    $this->view->outputJson(['error' => 'Method not allowed']);
+                    break;
+            }
+        } else {
+            http_response_code(404);
+            $this->view->outputJson(['error' => 'Route not found']);
+        }
     }
     
     private function handleGetRoute($model, $method, ? int $id) {

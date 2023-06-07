@@ -17,14 +17,14 @@ $jsonApi = new JsonApi();
 
 $controller = new Controller($jsonApi, $method);
 
-$controller->addRoute("/sellers", $sellerModel, 'getAllSellers');
-$controller->addRoute("/seller", $sellerModel, "getSingleSeller");
-$controller->addRoute("/addseller", $sellerModel, 'addSeller');
+$controller->addRoute("/sellers", $sellerModel, 'getAllSellers', "GET");
+$controller->addRoute("/seller/", $sellerModel, "getSingleSeller", "GET");
+$controller->addRoute("/addseller", $sellerModel, 'addSeller', "POST");
 
-$controller->addRoute("/products", $productModel, 'getAllProducts');
-$controller->addRoute("/product", $productModel, "getSingleProduct");
-$controller->addRoute("/addproduct", $productModel, 'addProduct');
-$controller->addRoute("/sellproduct", $productModel, 'setProductAsSold');
+$controller->addRoute("/products", $productModel, 'getAllProducts', "GET");
+$controller->addRoute("/product/", $productModel, "getSingleProduct", "GET");
+$controller->addRoute("/addproduct", $productModel, 'addProduct', "POST");
+$controller->addRoute("/product", $productModel, 'setProductAsSold', "PUT");
 
 
 $controller->start($request);
