@@ -18,12 +18,12 @@ class Controller {
     public function start($request):void {
         $parts = explode("/", $request);
             foreach ($this->routes as $route => $action) {
-            if($this->method == "GET" && trim($route, "/") == $parts[2]) {
-                $id = $parts[3] ?? null;
-                $model = $action['model'];
-                $method = $action['method'];
-                $this->handleGetRoute($model, $method, $id);
-            }
+                if ($this->method == "GET" && trim($route, "/") == $parts[2] && trim($route, "/") != 'sellproduct') {
+                    $id = $parts[3] ?? null;
+                    $model = $action['model'];
+                    $method = $action['method'];
+                    $this->handleGetRoute($model, $method, $id);
+                }
             else if($this->method == "POST" && trim($route, "/") == $parts[2]) {
                 $model = $action['model'];
                 $method = $action['method']; 
@@ -88,5 +88,9 @@ class Controller {
         if($id) {
             $model->$method($id);
         }
+        echo json_encode([
+            "message" => "Product set as sold",
+            "id" => $id
+        ]);
     }
 }
