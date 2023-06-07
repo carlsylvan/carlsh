@@ -14,7 +14,7 @@ class Product
     public $added;
     public $sold;
 
-    public function __construct($title, $description, $price, $seller_id, $category_id, $size_id, $color_id, $brand_id)
+    public function __construct($title, $description, $price, $seller_id, $category_id, $size_id, $color_id, $brand_id, $added, $sold)
     {
         $this->title = $title;
         $this->description = $description;
@@ -24,8 +24,8 @@ class Product
         $this->size_id = $size_id;
         $this->color_id = $color_id;
         $this->brand_id = $brand_id;
-        $this->added = null;
-        $this->sold = null;
+        $this->added = $added;
+        $this->sold = $sold;
     }
 
     public function addId (int $id) {

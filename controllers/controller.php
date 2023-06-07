@@ -30,8 +30,8 @@ class Controller {
                 var_dump($parts[2]);
                 $this->handlePostRoute($model, $method, $parts[2]);
             }
-            else if($this->method == "PUT" && trim($route, "/") == $parts[2] . "/" . $parts[3]) {
-                $id = $parts[4] ?? null;
+            else if ($this->method == "PUT" && trim($route, "/") == $parts[2]) {
+                $id = $parts[3] ?? null;
                 $model = $action['model'];
                 $method = $action['method'];
                 $this->handlePutRoute($model, $method, $id);
@@ -72,7 +72,9 @@ class Controller {
                         $size_id = filter_var($requestData["size_id"], FILTER_VALIDATE_INT);
                         $color_id = filter_var($requestData["color_id"], FILTER_VALIDATE_INT);
                         $brand_id = filter_var($requestData["brand_id"], FILTER_VALIDATE_INT);
-                        $product = new Product($title, $description, $price, $seller_id, $category_id, $size_id, $color_id, $brand_id);
+                        $added = null;
+                        $sold = null;
+                        $product = new Product($title, $description, $price, $seller_id, $category_id, $size_id, $color_id, $brand_id, $added, $sold);
                         $id = $model->$method($product);
                         break;
                 }

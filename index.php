@@ -24,5 +24,7 @@ $controller->addRoute("/addseller", $sellerModel, 'addSeller');
 $controller->addRoute("/products", $productModel, 'getAllProducts');
 $controller->addRoute("/product", $productModel, "getSingleProduct");
 $controller->addRoute("/addproduct", $productModel, 'addProduct');
+$controller->addRoute("/sellproduct", $productModel, 'setProductAsSold');
+
 
 $controller->start($request);

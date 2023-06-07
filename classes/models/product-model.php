@@ -18,10 +18,10 @@ class ProductModel extends DB {
                 $productSingle["seller_id"],
                 $productSingle["category_id"],
                 $productSingle["size_id"],
-                $productSingle["added"],
-                $productSingle["sold"],
                 $productSingle["color_id"],
-                $productSingle["brand_id"]
+                $productSingle["brand_id"],
+                $productSingle["added"],
+                $productSingle["sold"]
             );
             $product->addId($productSingle["id"]);
             array_push($products, $product);
@@ -51,6 +51,18 @@ class ProductModel extends DB {
         return $this->getProductClass($statement->fetchAll()) ;   
         }
 
+        public function addProduct (Product $product) : string {
+            $query = "INSERT INTO `products`(`title`, `description`, `price`, `seller_id`, `category_id`, `size_id`, `color_id`, `brand_id`) VALUES (?,?,?,?,?,?,?,?)";
+            $statement = $this->pdo->prepare($query);
+            $statement->execute([$product->title, $product->description, $product->price, $product->seller_id, $product->category_id, $product->size_id, $product->color_id, $product->brand_id]);
+            return $this->pdo->lastInsertId();  
+        }
         
-        
+        public function setProductAsSold(int $id){
+        $query = "UPDATE $this->table SET sold = NOW() WHERE id = ?";
+        $statement = $this->pdo->prepare($query);
+        $result = $statement->execute([$id]);
+
+        return $result;
+        }
 }
