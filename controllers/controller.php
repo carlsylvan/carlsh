@@ -14,18 +14,19 @@ class Controller
 
     public function addRoute($route, $model, $method, $requestType)
     {
-        $this->routes[$route] = ['model' => $model, 'method' => $method, 'requestType' => $requestType];
+        if (!isset($this->routes[$route])) {
+            $this->routes[$route] = [];
+        }
+        $this->routes[$route][$requestType] = ['model' => $model, 'method' => $method];
     }
 
     public function start($request): void
     {
         $parts = explode("/", $request);
         $matchedRoute = null;
-        foreach ($this->routes as $route => $action) {
-            if (trim($route, "/") == $parts[2] && $action['requestType'] == $this->method) {
-                $matchedRoute = $action;
-                break;
-            }
+        $routeKey = trim($parts[2], "/");
+        if (isset($this->routes[$routeKey]) && isset($this->routes[$routeKey][$this->method])) {
+            $matchedRoute = $this->routes[$routeKey][$this->method];
         }
 
         if ($matchedRoute) {
@@ -64,9 +65,10 @@ class Controller
     private function handlePostRoute($model, $method, $element) {
         $data = file_get_contents('php://input');
         $requestData = json_decode($data, true);
+        $id = null;
             
             switch ($element) {
-                case ("addseller"):
+                case ("sellers"):
                     $first_name = $requestData["first_name"];
                     $last_name = $requestData["last_name"];
                     $email = filter_var($requestData["email"], FILTER_VALIDATE_EMAIL);
@@ -74,7 +76,7 @@ class Controller
                     $seller = new Seller($first_name, $last_name, $email, $phone);
                     $id = $model->$method($seller);
                     break;
-                    case ("addproduct"):
+                    case ("products"):
                         $title = $requestData["title"];
                         $description = $requestData["description"];
                         $price = filter_var($requestData["price"], FILTER_VALIDATE_INT);
