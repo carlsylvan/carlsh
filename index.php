@@ -24,7 +24,7 @@ $controller->addRoute("/addseller", $sellerModel, 'addSeller', "POST");
 $controller->addRoute("/products", $productModel, 'getAllProducts', "GET");
 $controller->addRoute("/product/", $productModel, "getSingleProduct", "GET");
 $controller->addRoute("/addproduct", $productModel, 'addProduct', "POST");
-$controller->addRoute("/product/", $productModel, 'setProductAsSold', "PUT");
+$controller->addRoute("/sellproduct/", $productModel, 'setProductAsSold', "PUT");
 
 
 $controller->start($request);

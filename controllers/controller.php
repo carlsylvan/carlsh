@@ -64,7 +64,6 @@ class Controller
     private function handlePostRoute($model, $method, $element) {
         $data = file_get_contents('php://input');
         $requestData = json_decode($data, true);
-        // var_dump($requestData);
             
             switch ($element) {
                 case ("addseller"):
