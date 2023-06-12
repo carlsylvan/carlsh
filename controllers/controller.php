@@ -73,7 +73,8 @@ class Controller
         switch ($element) {
             case ("sellers"):
                 $sellerData = [
-                    'name' => $requestData['first_name'] . ' ' . $requestData['last_name'],
+                    'first_name' => $requestData['first_name'],
+                    'last_name' => $requestData['last_name'],
                     'email' => $requestData['email'],
                     'phone' => $requestData['phone'],
                 ];

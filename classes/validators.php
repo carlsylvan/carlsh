@@ -7,7 +7,7 @@ class SellerValidator
         $errors = [];
 
         $first_name = trim($data['first_name']);
-        $last_name = trim($data['last']);
+        $last_name = trim($data['last_name']);
         $email = trim($data['email']);
         $phone = trim($data['phone']);
 
@@ -22,8 +22,11 @@ class SellerValidator
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $errors['email'] = "Invalid email";
         }
+        
+        $valid_number = filter_var($phone, FILTER_SANITIZE_NUMBER_INT);
+        $pattern = '/^[0-9]{10}+$/';
 
-        if (!preg_match('/^\d{10}$/', $phone)) {
+        if (!preg_match($pattern, $valid_number)) {
             $errors['phone'] = "Invalid phone number";
         }
 
