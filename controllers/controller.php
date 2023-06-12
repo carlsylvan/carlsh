@@ -66,37 +66,56 @@ class Controller
         $data = file_get_contents('php://input');
         $requestData = json_decode($data, true);
         $id = null;
-            
-            switch ($element) {
-                case ("sellers"):
-                    $first_name = $requestData["first_name"];
-                    $last_name = $requestData["last_name"];
-                    $email = filter_var($requestData["email"], FILTER_VALIDATE_EMAIL);
-                    $phone = filter_var($requestData["phone"], FILTER_SANITIZE_NUMBER_INT);
-                    $seller = new Seller($first_name, $last_name, $email, $phone);
-                    $id = $model->$method($seller);
-                    break;
-                    case ("products"):
-                        $title = $requestData["title"];
-                        $description = $requestData["description"];
-                        $price = filter_var($requestData["price"], FILTER_VALIDATE_INT);
-                        $seller_id = filter_var($requestData["seller_id"], FILTER_VALIDATE_INT);
-                        $category_id = filter_var($requestData["category_id"], FILTER_VALIDATE_INT);
-                        $size_id = filter_var($requestData["size_id"], FILTER_VALIDATE_INT);
-                        $color_id = filter_var($requestData["color_id"], FILTER_VALIDATE_INT);
-                        $brand_id = filter_var($requestData["brand_id"], FILTER_VALIDATE_INT);
-                        $added = null;
-                        $sold = null;
-                        $product = new Product($title, $description, $price, $seller_id, $category_id, $size_id, $color_id, $brand_id, $added, $sold);
-                        $id = $model->$method($product);
-                        break;
+    
+        $sellerValidator = new SellerValidator();
+        $productValidator = new ProductValidator();
+    
+        switch ($element) {
+            case ("sellers"):
+                $sellerData = [
+                    'name' => $requestData['first_name'] . ' ' . $requestData['last_name'],
+                    'email' => $requestData['email'],
+                    'phone' => $requestData['phone'],
+                ];
+    
+                $validationResult = $sellerValidator->validate($sellerData);
+    
+                if (is_array($validationResult)) {
+                    http_response_code(400);
+                    echo json_encode(['errors' => $validationResult]);
+                    return;
                 }
-            http_response_code(201);
-            echo json_encode([
-                "message" => "New data has been added",
-                "id" => $id
-            ]);
-            }
+    
+                $seller = new Seller($requestData["first_name"], $requestData["last_name"], $requestData["email"], $requestData["phone"]);
+                $id = $model->$method($seller);
+                break;
+    
+            case ("products"):
+                $productData = [
+                    'name' => $requestData['title'],
+                    'description' => $requestData['description'],
+                    'price' => $requestData['price'],
+                ];
+    
+                $validationResult = $productValidator->validate($productData);
+    
+                if (is_array($validationResult)) {
+                    http_response_code(400);
+                    echo json_encode(['errors' => $validationResult]);
+                    return;
+                }
+    
+                $product = new Product($requestData["title"], $requestData["description"], $requestData["price"], $requestData["seller_id"], $requestData["category_id"], $requestData["size_id"], $requestData["color_id"], $requestData["brand_id"], null, null);
+                $id = $model->$method($product);
+                break;
+        }
+    
+        http_response_code(201);
+        echo json_encode([
+            "message" => "New data has been added",
+            "id" => $id
+        ]);
+    }
     private function handlePutRoute ($model, $method, ? int $id){
         if($id) {
             $model->$method($id);

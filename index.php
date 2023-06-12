@@ -4,6 +4,7 @@ require 'classes/views/json-api.php';
 require 'controllers/controller.php';
 require 'classes/models/product-model.php';
 require 'classes/models/seller-model.php';
+require_once 'classes/validators.php';
 $pdo = require 'partials/connect.php';
 
 $request = $_SERVER['REQUEST_URI'];
