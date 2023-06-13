@@ -83,10 +83,12 @@ class SellerModel extends DB {
             }
         }
         public function getAllProductsArray (int $userId) {
-            $query = "SELECT products.id, products.title, products.description, sizes.title AS size, categories.title AS category, products.price, products.added, products.sold FROM sellers
+            $query = "SELECT products.id, products.title, products.description, sizes.title AS size, colors.title as color, brands.title as brand, categories.title AS category, products.price, products.added, products.sold FROM sellers
                         JOIN products ON sellers.id = products.seller_id
                         JOIN sizes ON sizes.id = products.size_id
                         JOIN categories ON categories.id = products.category_id
+                        JOIN colors ON colors.id = products.color_id
+                        JOIN brands ON brands.id = products.brand_id
                         WHERE sellers.id = ?;";
             $statement = $this->pdo->prepare($query);
             $statement->execute([$userId]); 
