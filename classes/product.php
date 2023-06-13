@@ -3,16 +3,16 @@
 class Product
 {
     public int | null $id;
-    public $title;
-    public $description;
-    public $price;
-    public $seller_id;
-    public $category_id;
-    public $size_id;
-    public $color_id;
-    public $brand_id;
-    public $added;
-    public $sold;
+    public string $title;
+    public string $description;
+    public int $price;
+    public int $seller_id;
+    public int $category_id;
+    public int $size_id;
+    public int $color_id;
+    public int $brand_id;
+    public string | null $added;
+    public string | null $sold;
 
     public function __construct($title, $description, $price, $seller_id, $category_id, $size_id, $color_id, $brand_id, $added, $sold)
     {
