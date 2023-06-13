@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 12, 2023 at 11:39 PM
+-- Generation Time: Jun 13, 2023 at 01:15 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -38,7 +38,8 @@ CREATE TABLE `brands` (
 
 INSERT INTO `brands` (`id`, `title`) VALUES
 (1, 'Levi\'s'),
-(2, 'Lacoste');
+(2, 'Lacoste'),
+(3, 'Ralph Lauren');
 
 -- --------------------------------------------------------
 
@@ -76,7 +77,8 @@ CREATE TABLE `colors` (
 
 INSERT INTO `colors` (`id`, `title`) VALUES
 (1, 'Blå'),
-(2, 'Grön');
+(2, 'Grön'),
+(3, 'Beige');
 
 -- --------------------------------------------------------
 
@@ -149,7 +151,8 @@ CREATE TABLE `sizes` (
 
 INSERT INTO `sizes` (`id`, `title`) VALUES
 (1, '34'),
-(2, 'XL');
+(2, 'XL'),
+(3, '52');
 
 --
 -- Indexes for dumped tables
@@ -199,7 +202,7 @@ ALTER TABLE `sizes`
 -- AUTO_INCREMENT for table `brands`
 --
 ALTER TABLE `brands`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `categories`
@@ -211,25 +214,25 @@ ALTER TABLE `categories`
 -- AUTO_INCREMENT for table `colors`
 --
 ALTER TABLE `colors`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(111) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(111) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `sellers`
 --
 ALTER TABLE `sellers`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `sizes`
 --
 ALTER TABLE `sizes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
