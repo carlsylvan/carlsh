@@ -80,8 +80,8 @@ class Controller
                 ];
     
                 $validationResult = $sellerValidator->validate($sellerData);
-    
-                if (is_array($validationResult)) {
+
+                if (!empty($validationResult)) {
                     http_response_code(400);
                     echo json_encode(['errors' => $validationResult]);
                     return;
@@ -93,14 +93,14 @@ class Controller
     
             case ("products"):
                 $productData = [
-                    'name' => $requestData['title'],
+                    'title' => $requestData['title'],
                     'description' => $requestData['description'],
                     'price' => $requestData['price'],
                 ];
     
                 $validationResult = $productValidator->validate($productData);
-    
-                if (is_array($validationResult)) {
+
+                if (!empty($validationResult)) {
                     http_response_code(400);
                     echo json_encode(['errors' => $validationResult]);
                     return;

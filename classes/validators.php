@@ -6,40 +6,30 @@ class SellerValidator
     {
         $errors = [];
 
-        $first_name = trim($data['first_name']);
-        $last_name = trim($data['last_name']);
-        $email = trim($data['email']);
-        $phone = trim($data['phone']);
+        $data['first_name'] = filter_var(trim($data['first_name']), FILTER_SANITIZE_SPECIAL_CHARS);
+        $data['last_name'] = filter_var(trim($data['last_name']), FILTER_SANITIZE_SPECIAL_CHARS);
+        $data['email'] = filter_var(trim($data['email']), FILTER_SANITIZE_EMAIL);
+        $data['phone'] = filter_var(trim($data['phone']), FILTER_SANITIZE_NUMBER_INT);
 
-        if (strlen($first_name) < 3 || strlen($first_name) > 50) {
-            $errors['first_name'] = "First must be between 2 and 50 characters";
+        if (strlen($data['first_name']) < 3 || strlen($data['first_name']) > 50) {
+            $errors['first_name'] = "First name must be between 2 and 50 characters";
         }
 
-        if (strlen($last_name) < 3 || strlen($last_name) > 50) {
+        if (strlen($data['last_name']) < 3 || strlen($data['last_name']) > 50) {
             $errors['last_name'] = "Last name must be between 2 and 50 characters";
         }
 
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        if (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
             $errors['email'] = "Invalid email";
         }
         
-        $valid_number = filter_var($phone, FILTER_SANITIZE_NUMBER_INT);
         $pattern = '/^[0-9]{10}+$/';
 
-        if (!preg_match($pattern, $valid_number)) {
+        if (!preg_match($pattern, $data['phone'])) {
             $errors['phone'] = "Invalid phone number";
         }
 
-        if (!empty($errors)) {
-            return $errors;
-        }
-
-        $data['first_name'] = $first_name;
-        $data['last_name'] = $last_name;
-        $data['email'] = $email;
-        $data['phone'] = $phone;
-
-        return $data;
+        return $errors;
     }
 }
 
@@ -49,9 +39,9 @@ class ProductValidator
     {
         $errors = [];
 
-        $title = trim($data['title']);
-        $description = trim($data['description']);
-        $price = trim($data['price']);
+        $title = filter_var(trim($data['title'] ?? ''), FILTER_SANITIZE_SPECIAL_CHARS);
+        $description = filter_var(trim($data['description'] ?? ''), FILTER_SANITIZE_SPECIAL_CHARS);
+        $price = filter_var(trim($data['price'] ?? '0'), FILTER_SANITIZE_NUMBER_FLOAT);
 
         if (strlen($title) < 3 || strlen($title) > 50) {
             $errors['title'] = "Title must be between 3 and 50 characters";
@@ -65,14 +55,6 @@ class ProductValidator
             $errors['price'] = "Invalid price";
         }
 
-        if (!empty($errors)) {
-            return $errors;
-        }
-
-        $data['title'] = $title;
-        $data['description'] = $description;
-        $data['price'] = $price;
-
-        return $data;
+        return $errors;
     }
 }

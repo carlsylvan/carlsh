@@ -4,7 +4,7 @@ require_once "./classes/db.php";
 require "./classes/seller.php";
 class SellerModel extends DB {
     protected $table = "sellers";
-    public function convertToSellerClass (array $sellerArray) : array {
+    public function getSellerClass (array $sellerArray) : array {
         $sellers = [];
         foreach ($sellerArray as $sellerSingle) {
             $seller = new Seller (
@@ -15,10 +15,10 @@ class SellerModel extends DB {
             );
             $seller->addId($sellerSingle["id"]);
 
-            $seller->addProductCount($this->getProductsCountByUser($sellerSingle["id"]));
-            $seller->addSoldProductCount($this->getSoldProductsCountByUser($sellerSingle["id"]));
-            $seller->addTotalSellingPrice($this->getSoldProductsTotalPriceByUser($sellerSingle["id"]));
-            $seller->addProducts($this->getAllProductListByUser($sellerSingle["id"]));
+            $seller->addProductCount($this->getSellerProductsCount($sellerSingle["id"]));
+            $seller->addSoldProductCount($this->getSellerSoldProducts($sellerSingle["id"]));
+            $seller->addTotalSellingPrice($this->getSellerSoldProductsSum($sellerSingle["id"]));
+            $seller->addProducts($this->getAllProductsArray($sellerSingle["id"]));
             array_push($sellers, $seller);
         }
         return $sellers;
@@ -27,13 +27,13 @@ class SellerModel extends DB {
         $query = "SELECT * FROM $this->table ORDER BY $this->table.last_name ASC ";
         $statement = $this->pdo->prepare($query);
         $statement->execute();
-        return $this->convertToSellerClass($statement->fetchAll()) ;   
+        return $this->getSellerClass($statement->fetchAll()) ;   
     }
     public function getSingleSeller (int $id) : array {
         $query = "SELECT * FROM $this->table WHERE $this->table.id = ?";
         $statement = $this->pdo->prepare($query);
         $statement->execute([$id]);
-        return $this->convertToSellerClass($statement->fetchAll()) ;   
+        return $this->getSellerClass($statement->fetchAll()) ;   
         }
 
         public function addSeller (Seller $seller) : string {
@@ -43,7 +43,7 @@ class SellerModel extends DB {
             return $this->pdo->lastInsertId();  
         }
         
-        public function getProductsCountByUser (int $userId) {
+        public function getSellerProductsCount (int $userId) {
             $query = "SELECT COUNT(sellers.id) AS products_count FROM sellers
                         JOIN products ON products.seller_id = sellers.id
                         WHERE sellers.id = ?
@@ -56,7 +56,7 @@ class SellerModel extends DB {
                 return $array[0]['products_count'];
             }
         }
-        public function getSoldProductsCountByUser (int $userId) {
+        public function getSellerSoldProducts (int $userId) {
             $query = "SELECT COUNT(sellers.id) AS sold_products_count FROM sellers
                         JOIN products ON products.seller_id = sellers.id
                         WHERE sellers.id = ? AND products.sold IS NOT NULL
@@ -69,8 +69,8 @@ class SellerModel extends DB {
                 return $array[0]['sold_products_count'];
             }
         }
-        public function getSoldProductsTotalPriceByUser (int $userId) {
-            $query = "SELECT SUM(products.price) AS sum FROM sellers
+        public function getSellerSoldProductsSum (int $userId) {
+            $query = "SELECT SUM(products.price) AS sold_products_sum FROM sellers
                         JOIN products ON sellers.id = products.seller_id
                         WHERE sellers.id = ? AND products.sold IS NOT NULL
                         GROUP BY sellers.id;";
@@ -79,11 +79,11 @@ class SellerModel extends DB {
             $array = $statement->fetchAll();
             if (count($array)== 0) return 0;
             else {
-                return (int) $array[0]['sum'];
+                return (int) $array[0]['sold_products_sum'];
             }
         }
-        public function getAllProductListByUser (int $userId) {
-            $query = "SELECT products.id, products.title, sizes.title AS size, categories.title AS category, products.price, products.added, products.sold FROM sellers
+        public function getAllProductsArray (int $userId) {
+            $query = "SELECT products.id, products.title, products.description, sizes.title AS size, categories.title AS category, products.price, products.added, products.sold FROM sellers
                         JOIN products ON sellers.id = products.seller_id
                         JOIN sizes ON sizes.id = products.size_id
                         JOIN categories ON categories.id = products.category_id
